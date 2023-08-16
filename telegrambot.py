@@ -58,7 +58,7 @@ def messaging():
 
     while True:
         # Fetch the feed again, and again, and again...
-        f = feedparser.parse(FEED_URL, agent=USER_AGENT)
+        f = feedparser.parse(FEED_URL)
 
         # Compare feed entries to control list.
         # If there are new entries, send a message/push
