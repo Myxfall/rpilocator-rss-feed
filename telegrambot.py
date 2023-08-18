@@ -19,10 +19,18 @@ MESSAGE_TITLE = '<TITLE>'
 
 # Create the message body
 def formatMessage(entry):
+    try:
+            price   = entry.pepper_merchant['price']
+            name    = entry.pepper_merchant['name']
+    except (KeyError, TypeError):
+            price   = 0
+            name    = 'undefined'
+
     message = [
         f"**{MESSAGE_TITLE}**",
         f"",
         f"{entry.title}",
+        f"{name} - {price}"
         f"",
         f"{entry.link}",
     ]
@@ -30,7 +38,6 @@ def formatMessage(entry):
     message = '\n'.join(message)
 
     return message
-
 
 def curlMessage(message):
     payload = {"chat_id": TELEGRAM_CHAT_ID, "text": message}
