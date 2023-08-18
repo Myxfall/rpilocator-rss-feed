@@ -27,7 +27,7 @@ def formatMessage(entry):
             name    = 'undefined'
 
     message = [
-        f"**{MESSAGE_TITLE}**",
+        f"{MESSAGE_TITLE}",
         f"",
         f"{entry.title}",
         f"{name} - {price}"
@@ -46,18 +46,20 @@ def curlMessage(message):
     print(response)
 
 def messaging():
+    curlMessage("=== SETUP ===")
+
     # Set control to blank list
     control = []
 
     # Fetch the feed
     f = feedparser.parse(FEED_URL)
 
+    curlMessage("** Last Deal **")
+    curlMessage(formatMessage(f.entries[0]))
     # If there are entries in the feed, add entry guid to the control variable
     if f.entries:
         for entries in f.entries:
             message = formatMessage(entries)
-            curlMessage(message)
-
             control.append(entries.id)
 
     #Only wait 30 seconds after initial run.
