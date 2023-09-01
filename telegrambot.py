@@ -4,7 +4,6 @@ import time
 import json
 import requests
 
-
 # Feed URL
 FEED_URL = '<YOUR_FEED>'
 
@@ -14,25 +13,29 @@ TELEGRAM_CHAT_ID = '<CHAT_ID>'
 
 TELEGRAM_URL = "https://api.telegram.org/bot"+TELEGRAM_BOT_TOKEN+"/sendMessage"
 
-# Customize the message title
-MESSAGE_TITLE = '<TITLE>'
-
 # Create the message body
 def formatMessage(entry):
     try:
-            price   = entry.pepper_merchant['price']
-            name    = entry.pepper_merchant['name']
+        price   = entry.pepper_merchant['price']
+        name    = entry.pepper_merchant['name']
     except (KeyError, TypeError):
-            price   = 0
-            name    = 'undefined'
+        price   = 0
+        name    = 'undefined'
+
+    try: 
+        title   = entry.title
+        link    = entry.link
+    except Exception as e:
+        title   = f"{str(e)}"
+        link    = 'n/a'
+        price   = 'n/a'
+        name    = 'n/a'
 
     message = [
-        f"{MESSAGE_TITLE}",
-        f"",
-        f"{entry.title}",
+        f"{title}",
         f"{name} - {price}"
         f"",
-        f"{entry.link}",
+        f"{link}",
     ]
 
     message = '\n'.join(message)
