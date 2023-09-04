@@ -3,6 +3,7 @@ import feedparser
 import time
 import json
 import requests
+import datetime
 
 # Feed URL
 FEED_URL = '<YOUR_FEED>'
@@ -45,8 +46,15 @@ def formatMessage(entry):
 def curlMessage(message):
     payload = {"chat_id": TELEGRAM_CHAT_ID, "text": message}
     response = requests.post(TELEGRAM_URL, data=payload)
-    print(response.status_code)
-    print(response)
+
+    current_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+    message = (
+        f"{current_time}\n"
+        f"{response.status_code} HTTP\n"
+    )
+
+    print(message)
 
 def messaging():
     curlMessage("=== SETUP ===")
