@@ -5,14 +5,14 @@ import json
 import requests
 import datetime
 
-# Feed URL
-FEED_URL = '<YOUR_FEED>'
-
-# Telegram settings
-TELEGRAM_BOT_TOKEN = '<BOT_TOKEN>'
-TELEGRAM_CHAT_ID = '<CHAT_ID>'
-
-TELEGRAM_URL = "https://api.telegram.org/bot"+TELEGRAM_BOT_TOKEN+"/sendMessage"
+def load_secrets(filename='secrets.json'):
+    try:
+        with open(filename, 'r') as file:
+            secrets = json.load(file)
+        return secrets
+    except FileNotFoundError:
+        print(f"{filename} not found.")
+        return None
 
 # Create the message body
 def formatMessage(entry):
@@ -93,4 +93,18 @@ def messaging():
 
         time.sleep(59)
 
-messaging()
+
+secrets = load_secrets()
+if secrets:
+    # Feed URL
+    FEED_URL = secrets.get("FEED_URL")
+
+    # Telegram settings
+    TELEGRAM_BOT_TOKEN = secrets.get("TELEGRAM_BOT_TOKEN")
+    TELEGRAM_CHAT_ID = secrets.get("TELEGRAM_CHAT_ID")
+
+    TELEGRAM_URL = "https://api.telegram.org/bot"+TELEGRAM_BOT_TOKEN+"/sendMessage"
+
+    messaging()
+else:
+    print("Secrets could not be loaded.")
