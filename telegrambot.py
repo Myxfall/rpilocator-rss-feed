@@ -57,7 +57,6 @@ def messaging():
     # Fetch the feed
     f = feedparser.parse(FEED_URL)
 
-    curlMessage("** Last Deal **")
     curlMessage(formatMessage(f.entries[0]))
     # If there are entries in the feed, add entry guid to the control variable
     if f.entries:
