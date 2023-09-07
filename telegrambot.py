@@ -5,6 +5,8 @@ import json
 import requests
 import datetime
 
+FORMAT_DATE = "%Y-%m-%d %H:%M:%S"
+
 def load_secrets(filename='secrets.json'):
     try:
         with open(filename, 'r') as file:
@@ -26,6 +28,7 @@ def formatMessage(entry):
     try: 
         title   = entry.title
         link    = entry.link
+        date    = datetime.datetime.strptime(entry.published, "%a, %d %b %Y %H:%M:%S %z").strftime("%d-%m %H:%M")
     except Exception as e:
         title   = f"{str(e)}"
         link    = 'n/a'
@@ -34,7 +37,7 @@ def formatMessage(entry):
 
     message = [
         f"{title}",
-        f"{name} - {price}"
+        f"{date} - {name} - {price}"
         f"",
         f"{link}",
     ]
@@ -47,7 +50,7 @@ def curlMessage(message):
     payload = {"chat_id": TELEGRAM_CHAT_ID, "text": message}
     response = requests.post(TELEGRAM_URL, data=payload)
 
-    current_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    current_time = datetime.datetime.now().strftime(FORMAT_DATE)
 
     message = (
         f"{current_time}\n"
