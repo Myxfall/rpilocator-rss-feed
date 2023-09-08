@@ -28,7 +28,7 @@ def formatMessage(entry):
     try: 
         title   = entry.title
         link    = entry.link
-        date    = datetime.datetime.strptime(entry.published, "%a, %d %b %Y %H:%M:%S %z").strftime("%d-%m %H:%M")
+        date    = transformDateToTimeline(entry.published)
     except Exception as e:
         title   = f"{str(e)}"
         link    = 'n/a'
@@ -36,8 +36,8 @@ def formatMessage(entry):
         name    = 'n/a'
 
     message = [
+        f"{date} - {name} - {price}",
         f"{title}",
-        f"{date} - {name} - {price}"
         f"",
         f"{link}",
     ]
@@ -45,6 +45,19 @@ def formatMessage(entry):
     message = '\n'.join(message)
 
     return message
+
+def transformDateToTimeline(date):
+    published_datetime = datetime.datetime.strptime(date, "%a, %d %b %Y %H:%M:%S %z")
+    current_datetime = datetime.datetime.now(published_datetime.tzinfo)
+
+    # Calculate the time difference
+    time_difference = current_datetime - published_datetime
+
+    # Format the time difference as "X days ago at HH:MM"
+    if time_difference.days > 0:
+        return f"{time_difference.days} days ago {published_datetime.strftime('%H:%M')}"
+    else:
+        return f"Today {published_datetime.strftime('%H:%M')}"
 
 def curlMessage(message):
     payload = {"chat_id": TELEGRAM_CHAT_ID, "text": message}
