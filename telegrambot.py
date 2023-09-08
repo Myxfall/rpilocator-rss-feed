@@ -34,6 +34,7 @@ def formatMessage(entry):
         link    = 'n/a'
         price   = 'n/a'
         name    = 'n/a'
+        date    = 'n/a'
 
     message = [
         f"{date} - {name} - {price}",
@@ -50,11 +51,12 @@ def transformDateToTimeline(date):
     published_datetime = datetime.datetime.strptime(date, "%a, %d %b %Y %H:%M:%S %z")
     current_datetime = datetime.datetime.now(published_datetime.tzinfo)
 
-    # Calculate the time difference
     time_difference = current_datetime - published_datetime
 
     # Format the time difference as "X days ago at HH:MM"
-    if time_difference.days > 0:
+    if time_difference.days == 0:
+        return f"Yesterday {published_datetime.strftime('%H:%M')}"
+    elif time_difference.days >= 1:
         return f"{time_difference.days} days ago {published_datetime.strftime('%H:%M')}"
     else:
         return f"Today {published_datetime.strftime('%H:%M')}"
