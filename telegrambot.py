@@ -52,14 +52,12 @@ def transformDateToTimeline(date):
     current_datetime = datetime.datetime.now(published_datetime.tzinfo)
 
     time_difference = current_datetime - published_datetime
-
-    # Format the time difference as "X days ago at HH:MM"
+    
     if time_difference.days == 0:
-        return f"Yesterday {published_datetime.strftime('%H:%M')}"
+        hours, remainder = divmod(time_difference.total_seconds(), 3600)
+        return f"{int(hours)} hours ago"
     elif time_difference.days >= 1:
         return f"{time_difference.days} days ago {published_datetime.strftime('%H:%M')}"
-    else:
-        return f"Today {published_datetime.strftime('%H:%M')}"
 
 def curlMessage(message):
     payload = {"chat_id": TELEGRAM_CHAT_ID, "text": message}
