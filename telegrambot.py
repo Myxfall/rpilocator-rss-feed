@@ -21,7 +21,7 @@ def formatMessage(entry):
     try:
         price   = entry.pepper_merchant['price']
         name    = entry.pepper_merchant['name']
-    except (KeyError, TypeError):
+    except Exception as e:
         price   = 0
         name    = 'undefined'
 
