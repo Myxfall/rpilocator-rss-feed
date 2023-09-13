@@ -29,6 +29,7 @@ def formatMessage(entry):
         title   = entry.title
         link    = entry.link
         date    = transformDateToTimeline(entry.published)
+        category = entry.category
     except Exception as e:
         title   = f"{str(e)}"
         link    = 'n/a'
@@ -36,11 +37,17 @@ def formatMessage(entry):
         name    = 'n/a'
         date    = 'n/a'
 
+    try:
+        picture_url = entry.media_content['url']
+    except Exception as e:
+        picture_url = None
+
     message = [
-        f"{date} - {name} - {price}",
+        f"_{date}_",
+        f"`{category} - {name} - {price}`",
         f"{title}",
         f"",
-        f"{link}",
+        f"[See Link]({link})",
     ]
 
     message = '\n'.join(message)
@@ -60,7 +67,11 @@ def transformDateToTimeline(date):
         return f"{time_difference.days} days ago {published_datetime.strftime('%H:%M')}"
 
 def curlMessage(message):
-    payload = {"chat_id": TELEGRAM_CHAT_ID, "text": message}
+    payload = {
+        "chat_id": TELEGRAM_CHAT_ID,
+        "text": message,
+        "parse_mode": "Markdown"
+    }
     response = requests.post(TELEGRAM_URL, data=payload)
 
     current_time = datetime.datetime.now().strftime(FORMAT_DATE)
@@ -81,7 +92,9 @@ def messaging():
     # Fetch the feed
     f = feedparser.parse(FEED_URL)
 
-    curlMessage(formatMessage(f.entries[0]))
+    message = formatMessage(f.entries[0])
+
+    curlMessage(message)
     # If there are entries in the feed, add entry guid to the control variable
     if f.entries:
         for entries in f.entries:
