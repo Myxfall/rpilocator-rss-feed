@@ -43,8 +43,8 @@ def formatMessage(entry):
         picture_url = None
 
     message = [
-        f"_{date}_",
-        f"`{category} - {name} - {price}`",
+        f"_{date} - {category}_",
+        f"` {name} - {price}`",
         f"{title}",
         f"",
         f"[See Link]({link})",
