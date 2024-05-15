@@ -73,7 +73,7 @@ def messaging():
     if f.entries:
         for entries in f.entries:
             message = formatMessage(entries)
-            control.append(entries.guid)
+            control.append(entries.id)
 
     #Only wait 30 seconds after initial run.
     time.sleep(30)
@@ -86,13 +86,13 @@ def messaging():
         # If there are new entries, send a message/push
         # and add the new entry to control variable
         for entries in f.entries:
-            if entries.guid not in control:
+            if entries.id not in control:
 
                 message = formatMessage(entries)
                 curlMessage(message)
 
                 # Add entry guid to the control variable
-                control.append(entries.guid)
+                control.append(entries.id)
 
         time.sleep(360)
 
