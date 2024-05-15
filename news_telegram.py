@@ -33,7 +33,7 @@ def formatMessage(entry):
         f"_{publishedDate} - {source}_\n"
         f"{articleTitle}\n"
         f"\n"
-        f"{articleURL}\n"
+        f"[See Link]({articleURL})",
     ]
 
     message_formated = '\n'.join(message)
