@@ -91,7 +91,6 @@ def messaging():
         if f.entries:
             for entry in f.entries:
                 message = formatMessage(entry)
-                curlMessage(message)
                 control.append(entry.id)
 
         # Only wait 30 seconds after initial run.
